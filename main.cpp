@@ -1,10 +1,11 @@
 #include <iostream>
 #include <string>
-#include <memory>
+#include <sstream>
+#include <vector>
 
 int main(){
     std::string input = nullptr;    
-    std::shared_ptr<std::string> args = nullptr;
+    std::vector<std::string> args;
     int status = 0;
 
     while(true){
@@ -23,10 +24,16 @@ int main(){
 }
 
 
-std::shared_ptr<std::string> sushParse(std::string input){
-    return nullptr;
+std::vector<std::string> sushParse(std::string input){
+    std::vector<std::string> args;
+    std::stringstream inputStream(input);
+    std::string arg;
+    while(std::getline(inputStream,arg,' ')){
+        args.push_back(arg);
+    }
+    return;
 }
 
-int sushExec(std::shared_ptr<std::string> args){
+int sushExec(std::vector<std::string> args){
     return 0;
 }
