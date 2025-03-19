@@ -1,5 +1,5 @@
 
 all: sush
 
-sush: main.cpp
-	g++ -Wall main.cpp -o sush
+sush: src/main.cpp
+	g++ -Wall src/main.cpp -o sush

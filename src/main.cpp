@@ -3,16 +3,18 @@
 #include <sstream>
 #include <vector>
 
+std::vector<std::string> sushParse(std::string input);
+int sushExec(std::vector<std::string> args);
+
 int main(){
-    std::string input = nullptr;    
+    std::string input;    
     std::vector<std::string> args;
     int status = 0;
 
     while(true){
         std::cout<< "> " << std::flush;
         //Read input
-        std::cin >> input;
-        
+        std::getline(std::cin, input);
         //Parse input
         args = sushParse(input);
         //Execute arguments
@@ -23,17 +25,23 @@ int main(){
     return 0;
 }
 
-
 std::vector<std::string> sushParse(std::string input){
     std::vector<std::string> args;
     std::stringstream inputStream(input);
     std::string arg;
     while(std::getline(inputStream,arg,' ')){
-        args.push_back(arg);
+        if (!arg.empty()) {
+            args.push_back(arg);
+        }
     }
-    return;
+    return args;
 }
 
 int sushExec(std::vector<std::string> args){
+    std::cout << args[0] << ": command not found" << std::endl;
+
+
+
+
     return 0;
 }
