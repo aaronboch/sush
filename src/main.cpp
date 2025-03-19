@@ -1,7 +1,9 @@
-#include <iostream>
-#include <string>
-#include <sstream>
-#include <vector>
+#ifndef COMMON_H
+#define COMMON_H
+#include "headers/common.hpp"
+#endif
+
+#include "headers/builtin.hpp"
 
 std::vector<std::string> sushParse(std::string input);
 int sushExec(std::vector<std::string> args);
@@ -38,9 +40,11 @@ std::vector<std::string> sushParse(std::string input){
 }
 
 int sushExec(std::vector<std::string> args){
+    findBuiltin(args[0]);
+
     std::cout << args[0] << ": command not found" << std::endl;
 
-
+    
 
 
     return 0;
