@@ -25,7 +25,7 @@ int findBuiltin(std::vector<std::string> args) {
     } else if(cmd == "pwd") {
         pwd();
         ret = 0;
-    } else if(cmd == "cd") {
+    } else if(cmd == "cd"){
         cd(args);
         ret = 0;
     }
@@ -76,15 +76,16 @@ void pwd() {
 }
 
 
-void cd(std::vector<std::string> args) {
-    if(args.size() == 1) {
+void cd(std::vector<std::string> args){
+    if(args.size() == 1){
         fs::current_path("/home");
-    } else {
+    }else{
         std::string arg = args[1];
-        try {
-            fs::current_path(arg);
-        } catch(const std::filesystem::filesystem_error& e) {
-            std::cout << "The directory \"" << arg << "\" does not exist" << std::endl;
-        }
+            try {
+                fs::current_path(arg);
+            } catch(const std::filesystem::filesystem_error& e) {
+                std::cout << "The directory \"" << arg << "\" does not exist" << std::endl;
+            }   
+        
     }
 }

@@ -14,7 +14,8 @@ int main() {
     int status = 0;
 
     while(true) {
-        std::cout<< "> " << std::flush;
+        std::string cwd = fs::current_path();
+        std::cout<< cwd << "> " << std::flush;
         //Read input
         std::getline(std::cin, input);
         //Parse input
