@@ -1,4 +1,5 @@
 #include "headers/builtin.hpp"
+#include "headers/sushHistory.hpp"
 
 // builtin functions
 /*
@@ -9,7 +10,7 @@ builtin findBuiltin(std::string cmd){
     return builtin::NONE;
 }
 */
-int findBuiltin(std::vector<std::string> args) {
+int findBuiltin(std::vector<std::string> args, sushHistory hstr) {
     int ret = -1;
     std::string cmd = args[0];
     if(cmd == "exit") {
@@ -27,6 +28,9 @@ int findBuiltin(std::vector<std::string> args) {
         ret = 0;
     } else if(cmd == "cd") {
         cd(args);
+        ret = 0;
+    } else if(cmd == "history") {
+        history(hstr);
         ret = 0;
     }
 
@@ -53,7 +57,7 @@ void type(std::vector<std::string> args) {
     } else {
         std::string arg = args[1];
         bool isBuiltin = false;
-        if(arg == "exit" || arg == "echo" || arg == "type" || arg == "pwd") {
+        if(arg == "exit" || arg == "echo" || arg == "type" || arg == "pwd" || arg == "cd" || arg == "history") {
             isBuiltin = true;
         }
 
@@ -88,3 +92,9 @@ void cd(std::vector<std::string> args) {
         }
     }
 }
+
+void history(sushHistory hstr) {
+    hstr.printHistory();
+    
+}
+

@@ -2,8 +2,9 @@
 #define COMMON_H
 #include "common.hpp"
 #endif
+#include "sushHistory.hpp"
 
-int findBuiltin(std::vector<std::string> args);
+int findBuiltin(std::vector<std::string> args, sushHistory hstr);
 
 void exit();
 
@@ -16,6 +17,7 @@ void pwd();
 
 void cd(std::vector<std::string> args);
 
+void history(sushHistory hstr);
 
 //TODO: missing that i want to implement
-// cd,history,alias
+// history,alias
