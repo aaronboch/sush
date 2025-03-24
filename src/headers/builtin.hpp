@@ -20,4 +20,4 @@ void cd(std::vector<std::string> args);
 void history(sushHistory hstr);
 
 //TODO: missing that i want to implement
-// history,alias
+// alias

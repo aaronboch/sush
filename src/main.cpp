@@ -6,6 +6,8 @@
 #define SUSH_HISTORY_SIZE 100
 #include "headers/builtin.hpp"
 #include "headers/sushHistory.hpp"
+#include "headers/exec.hpp"
+
 
 std::vector<std::string> sushParse(std::string input);
 int sushExec(std::vector<std::string> args, sushHistory hstr);
@@ -54,9 +56,27 @@ std::vector<std::string> sushParse(std::string input) {
 }
 
 int sushExec(std::vector<std::string> args, sushHistory hstr) {
-    if(findBuiltin(args,hstr) == -1) {
-        std::cout << args[0] << ": command not found" << std::endl;
+    bool found = false;
+    
+    if(findBuiltin(args,hstr) != -1 && found == false) {
+        found = true;
+    }  
+    else if (found == false && exec::isExecutable(args) != -1){
+        exec::executableData data = exec::getExecutableData(args);
+        
+        pid_t pid = 0;
+        switch(pid = fork()){
+            case 0:
+                execv(data.pathname,data.argv);
+            default:
+                int status;
+                waitpid(pid, &status, 0);
+        }
+        found = true;
     }
 
+    if(!found){
+        std::cout << args[0] << ": command not found" << std::endl;
+    }
     return 0;
 }

@@ -1,15 +1,7 @@
 #include "headers/builtin.hpp"
 #include "headers/sushHistory.hpp"
 
-// builtin functions
-/*
-builtin findBuiltin(std::string cmd){
-    if(cmd == "exit"){
-        exit();
-    }
-    return builtin::NONE;
-}
-*/
+
 int findBuiltin(std::vector<std::string> args, sushHistory hstr) {
     int ret = -1;
     std::string cmd = args[0];
@@ -95,6 +87,5 @@ void cd(std::vector<std::string> args) {
 
 void history(sushHistory hstr) {
     hstr.printHistory();
-    
 }
 
