@@ -19,5 +19,5 @@ sushEnv.o: src/sushEnv.cpp
 clean:
 	rm *.o ./sush .sush_history src/*.orig src/headers/*.orig tests/*.test
 
-tests: tests/helloworld.cpp
+.PHONY tests: tests/helloworld.cpp 
 	g++ -Wall tests/helloworld.cpp -o tests/hello.test

@@ -2,7 +2,7 @@
 #include "headers/sushHistory.hpp"
 
 
-int findBuiltin(std::vector<std::string> args, sushHistory hstr) {
+int findBuiltin(std::vector<std::string> args, sushHistory& hstr, sushEnv& env) {
     int ret = -1;
     std::string cmd = args[0];
     if(cmd == "exit") {
@@ -23,6 +23,9 @@ int findBuiltin(std::vector<std::string> args, sushHistory hstr) {
         ret = 0;
     } else if(cmd == "history") {
         history(hstr);
+        ret = 0;
+    } else if(cmd == "alias") { //example: alias ""
+        alias(args,env);
         ret = 0;
     }
 
@@ -85,7 +88,20 @@ void cd(std::vector<std::string> args) {
     }
 }
 
-void history(sushHistory hstr) {
+void history(sushHistory& hstr) {
     hstr.printHistory();
 }
 
+void alias(std::vector<std::string> args, sushEnv& env) {
+    if(args.size() < 2) {
+        std::cerr << "To little arguments" << std::endl;
+        return;
+    }
+    if(args.size() > 2) {
+        for(size_t i = 2; i < args.size(); i++) {
+            args[1] += " " + args[i];
+        }
+    }
+    std::cout << "setting alias with: " << args[1] << std::endl;
+    env.setAlias(args[1]);
+}

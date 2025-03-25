@@ -20,11 +20,10 @@ int isExecutable(std::string cmd) {
         //returns true if the file is executable
         return ((fs::status(cmd).permissions() & fs::perms::owner_exec) != fs::perms::none);
     }
-
     return -1;
 }
 
-void execute(executableData data) {
+void execute(executableData& data) {
     pid_t pid = 0;
     switch(pid = fork()) {
     case 0:

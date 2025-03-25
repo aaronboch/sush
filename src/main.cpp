@@ -11,7 +11,7 @@
 
 
 std::vector<std::string> sushParse(std::string input);
-int sushExecute(std::vector<std::string> args, sushHistory hstr, sushEnv env);
+int sushExecute(std::vector<std::string> args, sushHistory& hstr, sushEnv& env);
 
 int main() {
     
@@ -56,21 +56,26 @@ std::vector<std::string> sushParse(std::string input) {
     return args;
 }
 
-int sushExecute(std::vector<std::string> args, sushHistory hstr, sushEnv env) {
+int sushExecute(std::vector<std::string> args, sushHistory& hstr, sushEnv& env) {
     bool found = false;
     std::string cmd = args[0];
     //search builtins
-    if(findBuiltin(args,hstr) != -1) {
+    if(findBuiltin(args,hstr,env) != -1) {
         found = true;
-    }  //search given direct path
+    }  else if(env.inAlias(args[0])){ //search alias
+        std::string newCmd = env.getAlias(args[0]);
+        args = sushParse(newCmd);
+        sushExecute(args,hstr,env);
+        found = true;
+    }//search given direct path
     else if (sushExec::isExecutable(cmd) != -1){
-        std::cout << "direct path" << std::endl;
         sushExec::executableData data = sushExec::getExecutableData(args);
         sushExec::execute(data);
         found = true;
     } //search with PATH env variable
     else{
         std::string newPath = env.searchPATH(cmd);
+
         if(!newPath.empty()){
             args[0] = newPath;
             sushExec::executableData data = sushExec::getExecutableData(args);
@@ -78,7 +83,6 @@ int sushExecute(std::vector<std::string> args, sushHistory hstr, sushEnv env) {
             found = true;
         }
     }
-
     if(!found){
         std::cout << cmd << ": command not found" << std::endl;
     }

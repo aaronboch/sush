@@ -13,7 +13,7 @@ struct executableData {
 };
 executableData getExecutableData(std::vector<std::string> args);
 int isExecutable(std::string args);
-void execute(executableData data);
+void execute(executableData& data);
 };
 
 #endif
