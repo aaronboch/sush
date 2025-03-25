@@ -7,7 +7,7 @@
 #define SUSH_EXEC_H
 
 namespace sush {
-    namespace exec{
+namespace exec {
 struct executableData {
     char* pathname;
     char** argv;

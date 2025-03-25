@@ -37,7 +37,7 @@ void history::write(std::string input){
         std::cerr << "Failed to write to history file!" << std::endl;
     }
 }
-
+//deletes line from top if HISTORY_MAX_LENGTH is reached
 void history::deleteLine(){
     historyFile.close();
 

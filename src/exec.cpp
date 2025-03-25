@@ -1,7 +1,8 @@
 #include "headers/exec.hpp"
 
 namespace sush {
-    namespace exec{
+namespace exec {
+//converts the inputed command into two cstyle arrays to be used in execv later on
 executableData getExecutableData(std::vector<std::string> args) {
     executableData data;
     data.pathname = (char *) malloc(args[0].size() * sizeof(char));

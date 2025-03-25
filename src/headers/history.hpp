@@ -8,7 +8,7 @@
 #define SUSH_HISTORY_H
 
 #define HISTORY_MAX_LENGTH 20
-namespace sush{
+namespace sush {
 class history {
 public:
     history();

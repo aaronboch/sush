@@ -21,3 +21,7 @@ clean:
 
 .PHONY tests: tests/helloworld.cpp 
 	g++ -Wall tests/helloworld.cpp -o tests/hello.test
+
+.PHONY astyle: 
+	astyle src/headers/*
+	astyle src/* 

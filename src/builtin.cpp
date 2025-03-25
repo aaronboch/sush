@@ -2,18 +2,18 @@
 #include "headers/history.hpp"
 
 
-namespace sush{
+namespace sush {
 
-    namespace builtin{
-    
-int find(std::vector<std::string> args, sush::history& hstr, sush::env& env) {
+namespace builtin {
+
+int find(std::vector<std::string>& args, sush::history& hstr, sush::env& env) {
     int ret = -1;
     std::string cmd = args[0];
     if(cmd == "exit") {
         exit();
     }
     else if(cmd == "echo") {
-        echo(args);
+        echo(args,env);
         ret = 0;
     }
     else if(cmd == "type") {
@@ -31,6 +31,9 @@ int find(std::vector<std::string> args, sush::history& hstr, sush::env& env) {
     } else if(cmd == "alias") { //example: alias ""
         alias(args,env);
         ret = 0;
+    } else if(cmd == "export") {
+        exprt(args,env);
+        ret = 0;
     }
 
     return ret;
@@ -41,8 +44,14 @@ void exit() {
 }
 
 //echoes string following the command
-void echo(std::vector<std::string> args) {
+void echo(std::vector<std::string>& args, sush::env env) {
+    size_t pos;
     for(size_t i = 1; i < args.size(); i++) {
+        //if the string contains a $ try to echo the environment variable, of the name following the $
+        // -> echo $PATH echoes the PATH variable
+        if((pos = args[i].find('$')) != std::string::npos) {
+            args[i] = env.getVariable(args[i].substr(pos+1));
+        }
         std::cout << args[i] << std::endl;
     }
 }
@@ -50,13 +59,13 @@ void echo(std::vector<std::string> args) {
 //shows what type a file/command is
 //types: alias,keyword,function,builtin,file
 //implemented types: builtin
-void type(std::vector<std::string> args) {
+void type(std::vector<std::string>& args) {
     if(args.size() < 2) {
         std::cout << "type: Could not find ''" << std::endl;
     } else {
         std::string arg = args[1];
         bool isBuiltin = false;
-        if(arg == "exit" || arg == "echo" || arg == "type" || arg == "pwd" || arg == "cd" || arg == "history") {
+        if(arg == "exit" || arg == "echo" || arg == "type" || arg == "pwd" || arg == "cd" || arg == "history" || arg == "alias" || arg == "export") {
             isBuiltin = true;
         }
 
@@ -79,7 +88,7 @@ void pwd() {
 }
 
 
-void cd(std::vector<std::string> args) {
+void cd(std::vector<std::string>& args) {
     if(args.size() == 1) {
         fs::current_path("/home");
     } else {
@@ -95,10 +104,25 @@ void cd(std::vector<std::string> args) {
 void history(sush::history& hstr) {
     hstr.printHistory();
 }
-
-void alias(std::vector<std::string> args, sush::env& env) {
+// makes/changes alias or if called without second argument, prints out all aliases
+void alias(std::vector<std::string>& args, sush::env& env) {
     if(args.size() < 2) {
-        std::cerr << "To little arguments" << std::endl;
+        env.printAliases();
+        return;
+    }
+    //put everything after the alias cmd into one string
+    if(args.size() > 2) {
+        for(size_t i = 2; i < args.size(); i++) {
+            args[1] += " " + args[i];
+        }
+    }
+    env.setAlias(args[1]);
+}
+
+// makes/changes environment variable or if called without second argument, prints out all environment variables
+void exprt(std::vector<std::string>& args, sush::env& env) {
+    if(args.size() < 2) {
+        env.printEnvr();
         return;
     }
     if(args.size() > 2) {
@@ -106,8 +130,7 @@ void alias(std::vector<std::string> args, sush::env& env) {
             args[1] += " " + args[i];
         }
     }
-    std::cout << "setting alias with: " << args[1] << std::endl;
-    env.setAlias(args[1]);
+    env.setVariable(args[1]);
 }
 
 };

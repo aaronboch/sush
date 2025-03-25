@@ -1,6 +1,6 @@
 
 #include "headers/env.hpp"
-namespace sush{
+namespace sush {
 
 env::env() {
     //set default values
@@ -13,7 +13,12 @@ void env::addToPath(std::string value) {
     envr["PATH"] += value;
 }
 
-void env::setVariable(std::string name, std::string value) {
+void env::setVariable(std::string nameAndValue) {
+    std::istringstream stream(nameAndValue);
+    std::string name;
+    std::string value;
+    getline(stream,name,'=');
+    getline(stream,value);
     envr[name] = value;
 }
 
@@ -23,13 +28,14 @@ std::string env::getVariable(std::string name) {
     }
     return "";
 }
-
-std::string env::searchPATH(std::string cmd){
+//searches if a command is in one of the paths in the PATH environment variable
+//returns the full path of the command if it is in one of the paths
+std::string env::searchPATH(std::string cmd) {
     std::istringstream stream(envr["PATH"]);
     std::string tok;
-    while(getline(stream,tok,':')){
+    while(getline(stream,tok,':')) {
         tok += "/" + cmd;
-        if(sush::exec::isExecutable(tok) != -1){
+        if(sush::exec::isExecutable(tok) != -1) {
             return tok;
         }
     }
@@ -37,15 +43,12 @@ std::string env::searchPATH(std::string cmd){
     return "";
 }
 
-bool env::inAlias(std::string alias){
+bool env::inAlias(std::string alias) {
     return aliases.find(alias) != aliases.end();
 }
 
-void env::setAlias(std::string alias, std::string cmd){
-    aliases[alias] = cmd;
-}
 
-void env::setAlias(std::string aliasAndCmd){
+void env::setAlias(std::string aliasAndCmd) {
     std::istringstream stream(aliasAndCmd);
     std::string alias;
     std::string cmd;
@@ -54,7 +57,19 @@ void env::setAlias(std::string aliasAndCmd){
     aliases[alias] = cmd;
 }
 
-std::string env::getAlias(std::string alias){
+std::string env::getAlias(std::string alias) {
     return aliases[alias];
+}
+
+void env::printAliases() {
+    for(const auto& alias : aliases) {
+        std::cout << "alias " << alias.first << "=" << alias.second << std::endl;
+    }
+}
+
+void env::printEnvr() {
+    for(const auto& elem : envr) {
+        std::cout << elem.first << "=" << elem.second << std::endl;
+    }
 }
 };
