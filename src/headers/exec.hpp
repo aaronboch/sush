@@ -3,13 +3,17 @@
 #include "common.hpp"
 #endif
 
-namespace exec {
+#ifndef SUSHEXEC_H
+#define SUSHEXEC_H
+
+namespace sushExec {
 struct executableData {
     char* pathname;
     char** argv;
-    unsigned int argvSize;
 };
 executableData getExecutableData(std::vector<std::string> args);
-int isExecutable(std::vector<std::string> args);
-
+int isExecutable(std::string args);
+void execute(executableData data);
 };
+
+#endif

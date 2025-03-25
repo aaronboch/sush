@@ -7,18 +7,19 @@
 #include "headers/builtin.hpp"
 #include "headers/sushHistory.hpp"
 #include "headers/exec.hpp"
+#include "headers/sushEnv.hpp"
 
 
 std::vector<std::string> sushParse(std::string input);
-int sushExec(std::vector<std::string> args, sushHistory hstr);
+int sushExecute(std::vector<std::string> args, sushHistory hstr, sushEnv env);
 
 int main() {
     
     sushHistory hstr{};
+    sushEnv env{};
 
     std::string input;
     std::vector<std::string> args;
-    int status = 0;
     
     while(true) {
 
@@ -37,7 +38,7 @@ int main() {
         //Parse input
         args = sushParse(input);
         //Execute arguments
-        status = sushExec(args,hstr);
+        sushExecute(args,hstr,env);
     }
     
     return 0;
@@ -55,28 +56,31 @@ std::vector<std::string> sushParse(std::string input) {
     return args;
 }
 
-int sushExec(std::vector<std::string> args, sushHistory hstr) {
+int sushExecute(std::vector<std::string> args, sushHistory hstr, sushEnv env) {
     bool found = false;
-    
-    if(findBuiltin(args,hstr) != -1 && found == false) {
+    std::string cmd = args[0];
+    //search builtins
+    if(findBuiltin(args,hstr) != -1) {
         found = true;
-    }  
-    else if (found == false && exec::isExecutable(args) != -1){
-        exec::executableData data = exec::getExecutableData(args);
-        
-        pid_t pid = 0;
-        switch(pid = fork()){
-            case 0:
-                execv(data.pathname,data.argv);
-            default:
-                int status;
-                waitpid(pid, &status, 0);
+    }  //search given direct path
+    else if (sushExec::isExecutable(cmd) != -1){
+        std::cout << "direct path" << std::endl;
+        sushExec::executableData data = sushExec::getExecutableData(args);
+        sushExec::execute(data);
+        found = true;
+    } //search with PATH env variable
+    else{
+        std::string newPath = env.searchPATH(cmd);
+        if(!newPath.empty()){
+            args[0] = newPath;
+            sushExec::executableData data = sushExec::getExecutableData(args);
+            sushExec::execute(data);
+            found = true;
         }
-        found = true;
     }
 
     if(!found){
-        std::cout << args[0] << ": command not found" << std::endl;
+        std::cout << cmd << ": command not found" << std::endl;
     }
     return 0;
 }
