@@ -64,12 +64,8 @@ void type(std::vector<std::string>& args) {
         std::cout << "type: Could not find ''" << std::endl;
     } else {
         std::string arg = args[1];
-        bool isBuiltin = false;
-        if(arg == "exit" || arg == "echo" || arg == "type" || arg == "pwd" || arg == "cd" || arg == "history" || arg == "alias" || arg == "export") {
-            isBuiltin = true;
-        }
 
-        if(isBuiltin) {
+        if(isBuiltin(arg)) {
             std::cout << arg << " is a shell builtin" << std::endl;
         }
         else {
@@ -78,6 +74,12 @@ void type(std::vector<std::string>& args) {
     }
 }
 
+bool isBuiltin(std::string arg) {
+    if(arg == "exit" || arg == "echo" || arg == "type" || arg == "pwd" || arg == "cd" || arg == "history" || arg == "alias" || arg == "export") {
+        return true;
+    }
+    return false;
+}
 
 void pwd() {
     try {

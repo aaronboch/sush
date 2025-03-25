@@ -19,7 +19,8 @@ void echo(std::vector<std::string>& args, sush::env env);
 
 void type(std::vector<std::string>& args);
 
-//filesystem
+bool isBuiltin(std::string arg);
+
 void pwd();
 
 void cd(std::vector<std::string>& args);
