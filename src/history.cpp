@@ -1,26 +1,26 @@
-#include "headers/sushHistory.hpp"
+#include "headers/history.hpp"
 
-
-sushHistory::sushHistory(){
+namespace sush{
+history::history(){
      historyFile.open(".sush_history", std::ios::app);
      if (!historyFile) {
         std::cerr << "Failed to open history file." << std::endl;
     }
 }
 
-sushHistory::~sushHistory(){
+history::~history(){
     if(historyFile.is_open()){
         historyFile.close();
     }
 }
 
-sushHistory::sushHistory(sushHistory& hstr) {
+history::history(history& hstr) {
     if (hstr.historyFile.is_open()) {
         historyFile.open(".sush_history", std::ios::app);
     }
 }
 
-int sushHistory::count(){
+int history::count(){
     std::fstream temp{".sush_history"};
     std::string l;
     int numlines = 0;
@@ -30,7 +30,7 @@ int sushHistory::count(){
     temp.close();
     return numlines;
 }
-void sushHistory::write(std::string input){
+void history::write(std::string input){
     if (historyFile.is_open()) {
         historyFile << input << std::endl;
     } else {
@@ -38,7 +38,7 @@ void sushHistory::write(std::string input){
     }
 }
 
-void sushHistory::deleteLine(){
+void history::deleteLine(){
     historyFile.close();
 
     std::ofstream newHis{".sush_history_new"};
@@ -67,7 +67,7 @@ void sushHistory::deleteLine(){
     historyFile.open(".sush_history", std::ios::app);
 }
 
-void sushHistory::printHistory(){
+void history::printHistory(){
     std::fstream temp{".sush_history"};
     std::string l;
     while(getline(temp,l)){
@@ -75,3 +75,4 @@ void sushHistory::printHistory(){
     }
     temp.close();
 }
+};

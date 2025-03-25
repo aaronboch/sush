@@ -4,16 +4,16 @@
 #endif
 
 
-#ifndef HISTORY_H
-#define HISTORY_H
+#ifndef SUSH_HISTORY_H
+#define SUSH_HISTORY_H
 
 #define HISTORY_MAX_LENGTH 20
-
-class sushHistory {
+namespace sush{
+class history {
 public:
-    sushHistory();
-    ~sushHistory();
-    sushHistory(sushHistory&);
+    history();
+    ~history();
+    history(history&);
     int count();
     void write(std::string);
     void deleteLine();
@@ -21,5 +21,5 @@ public:
 private:
     std::ofstream historyFile;
 };
-
+};
 #endif

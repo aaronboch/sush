@@ -1,20 +1,20 @@
 
 all: sush
 
-sush: src/main.cpp builtin.o sushHistory.o exec.o sushEnv.o
-	g++ -Wall src/main.cpp builtin.o sushHistory.o exec.o sushEnv.o -o sush
+sush: src/main.cpp builtin.o history.o exec.o env.o
+	g++ -Wall src/main.cpp builtin.o history.o exec.o env.o -o sush
 
 builtin.o: src/builtin.cpp 
 	g++ -Wall -c src/builtin.cpp 
 
-sushHistory.o: src/sushHistory.cpp
-	g++ -Wall -c src/sushHistory.cpp
+history.o: src/history.cpp
+	g++ -Wall -c src/history.cpp
 
 exec.o: src/exec.cpp
 	g++ -Wall -c src/exec.cpp
 	
-sushEnv.o: src/sushEnv.cpp
-	g++ -Wall -c src/sushEnv.cpp
+env.o: src/env.cpp
+	g++ -Wall -c src/env.cpp
 
 clean:
 	rm *.o ./sush .sush_history src/*.orig src/headers/*.orig tests/*.test

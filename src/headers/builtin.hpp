@@ -2,26 +2,32 @@
 #define COMMON_H
 #include "common.hpp"
 #endif
-#include "sushHistory.hpp"
-#include "sushEnv.hpp"
+#include "history.hpp"
+#include "env.hpp"
 
-int findBuiltin(std::vector<std::string> args, sushHistory& hstr, sushEnv& env);
-
-void exit();
-
-void echo(std::vector<std::string> args);
-
-void type(std::vector<std::string> args);
-
-//filesystem
-void pwd();
-
-void cd(std::vector<std::string> args);
-
-void history(sushHistory& hstr);
-
-void alias(std::vector<std::string> args, sushEnv& env);
-
-
-//TODO: missing that i want to implement
-// alias
+#ifndef SUSH_BUILTIN_H
+#define SUSH_BUILTIN_H
+namespace sush{
+    
+    namespace builtin{
+        
+        int find(std::vector<std::string> args, sush::history& hstr, sush::env& env);
+        
+        void exit();
+        
+        void echo(std::vector<std::string> args);
+        
+        void type(std::vector<std::string> args);
+        
+        //filesystem
+        void pwd();
+        
+        void cd(std::vector<std::string> args);
+        
+        void history(sush::history& hstr);
+        
+        void alias(std::vector<std::string> args, sush::env& env);
+        
+    };
+};
+#endif

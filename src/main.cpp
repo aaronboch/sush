@@ -5,18 +5,18 @@
 
 #define SUSH_HISTORY_SIZE 100
 #include "headers/builtin.hpp"
-#include "headers/sushHistory.hpp"
+#include "headers/history.hpp"
 #include "headers/exec.hpp"
-#include "headers/sushEnv.hpp"
+#include "headers/env.hpp"
 
 
 std::vector<std::string> sushParse(std::string input);
-int sushExecute(std::vector<std::string> args, sushHistory& hstr, sushEnv& env);
+int sushExecute(std::vector<std::string> args, sush::history& hstr, sush::env& env);
 
 int main() {
     
-    sushHistory hstr{};
-    sushEnv env{};
+    sush::history hstr{};
+    sush::env env{};
 
     std::string input;
     std::vector<std::string> args;
@@ -56,11 +56,11 @@ std::vector<std::string> sushParse(std::string input) {
     return args;
 }
 
-int sushExecute(std::vector<std::string> args, sushHistory& hstr, sushEnv& env) {
+int sushExecute(std::vector<std::string> args, sush::history& hstr, sush::env& env) {
     bool found = false;
     std::string cmd = args[0];
     //search builtins
-    if(findBuiltin(args,hstr,env) != -1) {
+    if(sush::builtin::find(args,hstr,env) != -1) {
         found = true;
     }  else if(env.inAlias(args[0])){ //search alias
         std::string newCmd = env.getAlias(args[0]);
@@ -68,9 +68,9 @@ int sushExecute(std::vector<std::string> args, sushHistory& hstr, sushEnv& env) 
         sushExecute(args,hstr,env);
         found = true;
     }//search given direct path
-    else if (sushExec::isExecutable(cmd) != -1){
-        sushExec::executableData data = sushExec::getExecutableData(args);
-        sushExec::execute(data);
+    else if (sush::exec::isExecutable(cmd) != -1){
+        sush::exec::executableData data = sush::exec::getExecutableData(args);
+        sush::exec::execute(data);
         found = true;
     } //search with PATH env variable
     else{
@@ -78,8 +78,8 @@ int sushExecute(std::vector<std::string> args, sushHistory& hstr, sushEnv& env) 
 
         if(!newPath.empty()){
             args[0] = newPath;
-            sushExec::executableData data = sushExec::getExecutableData(args);
-            sushExec::execute(data);
+            sush::exec::executableData data = sush::exec::getExecutableData(args);
+            sush::exec::execute(data);
             found = true;
         }
     }

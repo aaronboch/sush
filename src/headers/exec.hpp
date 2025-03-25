@@ -3,10 +3,11 @@
 #include "common.hpp"
 #endif
 
-#ifndef SUSHEXEC_H
-#define SUSHEXEC_H
+#ifndef SUSH_EXEC_H
+#define SUSH_EXEC_H
 
-namespace sushExec {
+namespace sush {
+    namespace exec{
 struct executableData {
     char* pathname;
     char** argv;
@@ -14,6 +15,7 @@ struct executableData {
 executableData getExecutableData(std::vector<std::string> args);
 int isExecutable(std::string args);
 void execute(executableData& data);
+};
 };
 
 #endif

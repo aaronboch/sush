@@ -1,5 +1,7 @@
 #include "headers/exec.hpp"
-namespace sushExec {
+
+namespace sush {
+    namespace exec{
 executableData getExecutableData(std::vector<std::string> args) {
     executableData data;
     data.pathname = (char *) malloc(args[0].size() * sizeof(char));
@@ -33,4 +35,5 @@ void execute(executableData& data) {
         waitpid(pid, &status, 0);
     }
 }
+};
 };

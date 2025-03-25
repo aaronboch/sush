@@ -5,11 +5,12 @@
 
 #include "exec.hpp"
 
-#ifndef SUSHENV_H
-#define SUSHENV_H
-class sushEnv {
+#ifndef SUSH_ENV_H
+#define SUSH_ENV_H
+namespace sush{
+class env {
 public:
-    sushEnv();
+    env();
     void addToPath(std::string value);
     void setVariable(std::string name, std::string value);
     std::string getVariable(std::string name);
@@ -19,8 +20,8 @@ public:
     void setAlias(std::string aliasAndCommand);
     std::string getAlias(std::string alias);
 private:
-    std::map<std::string,std::string> env;
+    std::map<std::string,std::string> envr;
     std::map<std::string,std::string> aliases;
 };
-
+};
 #endif
