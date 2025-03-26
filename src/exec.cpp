@@ -2,6 +2,30 @@
 
 namespace sush {
 namespace exec {
+pid_t childPid = -1;
+sigjmp_buf buf;
+void handler(int signum)
+{
+    if (childPid > 0) {
+        printf("\nParent received SIGINT. Killing child process (%d)...\n", childPid);
+        kill(childPid, SIGINT);  // Forward SIGINT to the child
+        waitpid(childPid, NULL, 0);
+        childPid = -1;
+        siglongjmp(buf, 1); 
+    }
+}
+int initHandler() {
+    struct sigaction sa;
+    sa.sa_handler = handler;
+    sa.sa_flags = 0;
+    sigemptyset(&sa.sa_mask);
+    if (sigaction(SIGINT, &sa, NULL) == -1) {
+        std::cerr << "Error setting signal handler.\n";
+        return 1;
+    }
+    return 0;
+}
+
 //converts the inputed command into two cstyle arrays to be used in execv later on
 executableData getExecutableData(std::vector<std::string> args) {
     executableData data;
@@ -27,13 +51,12 @@ int isExecutable(std::string cmd) {
 }
 
 void execute(executableData& data) {
-    pid_t pid = 0;
-    switch(pid = fork()) {
+    switch(childPid = fork()) {
     case 0:
         execv(data.pathname,data.argv);
     default:
         int status;
-        waitpid(pid, &status, 0);
+        waitpid(childPid, &status, 0);
     }
 }
 };

@@ -8,6 +8,12 @@
 
 namespace sush {
 namespace exec {
+extern sigjmp_buf buf;
+
+void handler(int signum);
+int initHandler();
+
+
 struct executableData {
     char* pathname;
     char** argv;

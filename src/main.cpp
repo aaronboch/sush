@@ -9,19 +9,26 @@
 #include "headers/exec.hpp"
 #include "headers/env.hpp"
 
-
 std::vector<std::string> sushParse(std::string input);
 int sushExecute(std::vector<std::string> args, sush::history& hstr, sush::env& env);
 
 int main() {
-    
+    if(sush::exec::initHandler()){
+        return -1;
+    }
+
     sush::history hstr{};
     sush::env env{};
 
     std::string input;
     std::vector<std::string> args;
-    
+    if (sigsetjmp(sush::exec::buf, 1) == 0) {
+        printf("Press Ctrl+C to trigger SIGINT\n");
+    } else {
+        printf("Returned to main via longjmp\n");
+    }
     while(true) {
+        
 
         std::string cwd = fs::current_path();
         std::cout<< cwd << "> " << std::flush;

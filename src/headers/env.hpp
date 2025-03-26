@@ -3,10 +3,11 @@
 #include "common.hpp"
 #endif
 
-#include "exec.hpp"
 
 #ifndef SUSH_ENV_H
 #define SUSH_ENV_H
+#include "exec.hpp"
+
 namespace sush {
 class env {
 public:

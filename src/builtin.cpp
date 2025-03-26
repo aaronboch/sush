@@ -1,5 +1,4 @@
 #include "headers/builtin.hpp"
-#include "headers/history.hpp"
 
 
 namespace sush {
@@ -50,7 +49,13 @@ void echo(std::vector<std::string>& args, sush::env env) {
         //if the string contains a $ try to echo the environment variable, of the name following the $
         // -> echo $PATH echoes the PATH variable
         if((pos = args[i].find('$')) != std::string::npos) {
-            args[i] = env.getVariable(args[i].substr(pos+1));
+            //escapes $ when \ is used before
+            if(pos > 0 && args[i][pos-1] == '\\') {
+                args[i] = args[i].substr(pos);
+            }
+            else {
+                args[i] = env.getVariable(args[i].substr(pos+1));
+            }
         }
         std::cout << args[i] << std::endl;
     }

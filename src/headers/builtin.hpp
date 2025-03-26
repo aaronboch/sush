@@ -2,11 +2,13 @@
 #define COMMON_H
 #include "common.hpp"
 #endif
+
 #include "history.hpp"
 #include "env.hpp"
 
 #ifndef SUSH_BUILTIN_H
 #define SUSH_BUILTIN_H
+
 namespace sush {
 
 namespace builtin {
