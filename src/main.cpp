@@ -22,10 +22,8 @@ int main() {
 
     std::string input;
     std::vector<std::string> args;
-    if (sigsetjmp(sush::exec::buf, 1) == 0) {
-        printf("Press Ctrl+C to trigger SIGINT\n");
-    } else {
-        printf("Returned to main via longjmp\n");
+    if (sigsetjmp(sush::exec::buf, 1) != 0) {
+        //printf("Returned to main via longjmp\n");
     }
     while(true) {
         

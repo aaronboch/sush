@@ -7,12 +7,12 @@ sigjmp_buf buf;
 void handler(int signum)
 {
     if (childPid > 0) {
-        printf("\nParent received SIGINT. Killing child process (%d)...\n", childPid);
+        //printf("\nParent received SIGINT. Killing child process (%d)...\n", childPid);
         kill(childPid, SIGINT);  // Forward SIGINT to the child
         waitpid(childPid, NULL, 0);
         childPid = -1;
-        siglongjmp(buf, 1); 
     }
+    siglongjmp(buf, 1); 
 }
 int initHandler() {
     struct sigaction sa;
